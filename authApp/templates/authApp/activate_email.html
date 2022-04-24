@@ -1,0 +1,6 @@
+{% load event_tags %}
+{% autoescape off %}
+Hi {{ user.email|get_username }},
+    Please click on the link to confirm your registration, 
+    http://{{ domain }}{% url 'authApp:activate' uidb64=uid token=token %}
+{% endautoescape %}

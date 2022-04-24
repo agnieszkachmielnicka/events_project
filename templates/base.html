@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Events</title>
+  </head>
+  <body>
+    <div>
+      <a href="{% url 'events:event_list' %}">Home</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'authApp:profile' pk=user.id %}">My profile</a>
+        <a href="{% url 'authApp:logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'authApp:login' %}">Login</a>
+      {% endif %}
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
+</html>

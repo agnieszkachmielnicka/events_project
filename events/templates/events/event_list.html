@@ -1,0 +1,96 @@
+<style type="text/css">
+    ol {
+        list-style-type: none;
+    }
+    .delete-button {
+      color: red;
+      background-color: white;
+      border: 1px solid red;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration:none;
+    }
+    .join-button {
+      color: green;
+      background-color: white;
+      border: 1px solid green;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration:none;
+    }
+    .leave-button {
+      color: black;
+      background-color: white;
+      border: 1px solid black;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration:none;
+    }
+    .create-event {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+</style>
+{% extends 'base.html' %}
+{% load event_tags %}
+{% block content %}
+  {% if user.is_authenticated %}
+      <div class="create-event">
+        <a href="{% url 'events:create_event' %}" class="join-button">CREATE EVENT</a>
+      </div>
+  {% endif %}
+  <h1>LIST OF EVENTS:</h1>
+  <div>
+    <ol>
+      {% for event in object_list %}
+          <li>
+              <p><strong>Title:</strong> {{event.title}}</p>
+              <p><strong>Owner:</strong> {{event.owner|get_username}}</p>
+              <p><strong>Date:</strong> {{event.event_date}}</p>
+              <p><strong>Description:</strong> {{event.description}}</p>
+              <p><strong>Number of participants:</strong> {{event.participants.all.count}}</p>
+              {% if user == event.owner %}
+                  <div>
+                      <a href="{% url 'events:edit_event' pk=event.id %}" class="leave-button">
+                        <span>EDIT</span>
+                      </a>
+                  </div>
+                  <div style="margin-top: 15px;">
+                      <a href="{% url 'events:delete_event' pk=event.id %}" class="delete-button">
+                        <span>DELETE EVENT</span>
+                      </a>
+                  </div>
+              {% elif user in event.participants.all %}
+                  <a href="{% url 'events:leave_event' pk=event.id %}" class="leave-button">
+                    <span>LEAVE</span>
+                  </a>
+              {% elif user.is_authenticated %}
+                  <a href="{% url 'events:join_event' pk=event.id %}" class="join-button">
+                    <span>JOIN</span>
+                  </a>
+              {% endif %}
+          </li>
+      {% endfor %}
+    </ol>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+  </div>
+{% endblock %}

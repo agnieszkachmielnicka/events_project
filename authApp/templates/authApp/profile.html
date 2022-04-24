@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load event_tags %}
+{% block content %}
+    <div>
+        <p>Hello {{user|get_username}}</p>
+        <p>email: {{user.email}}</p>
+        <a href="{% url 'authApp:edit_user' pk=user.id %}">Edit profile</a>
+    </div>
+{% endblock %}

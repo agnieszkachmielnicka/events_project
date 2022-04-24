@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
+    <p>Your account has been activated. You can log in now.</p>
+    <a href="{% url 'authApp:login' %}">Login</a>
+{% endblock %}

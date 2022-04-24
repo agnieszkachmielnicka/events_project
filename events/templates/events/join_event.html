@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load event_tags %}
+{% block content %}
+    <h2>Do you want to {% if 'join' in request.path %}join{% else %}leave{%endif%} event {{object}}?</h2>
+    <p>Participants:</p>
+    <ul>
+        {% for p in object.participants.all %}
+            <li>{{p|get_username}}</li>
+        {% endfor %}
+    </ul>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">{% if 'join' in request.path %}join{% else %}leave{%endif%}</button>
+    </form>
+{% endblock %}

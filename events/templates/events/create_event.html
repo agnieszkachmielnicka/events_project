@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>{% if 'create' in request.path %}Create{% else %}Edit{%endif%} event</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">{% if 'create' in request.path %}Create{% else %}Edit{%endif%}</button>
+    </form>
+{% endblock %}
